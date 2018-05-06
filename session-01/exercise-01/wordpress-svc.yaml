@@ -1,10 +1,10 @@
 ﻿apiVersion: "v1"
 kind: "Service"
 metadata:
-  name: wp
+  name: wp-web
   namespace: exercise-01
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - name: http
     port: 80
