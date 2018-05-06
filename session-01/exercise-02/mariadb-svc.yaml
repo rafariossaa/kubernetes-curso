@@ -1,10 +1,14 @@
 ﻿apiVersion: "v1"
 kind: "Service"
 metadata:
-  # name: XXXX
-  # namespace: XXXX
+  name: wp-mariadb
+  namespace: exercise-02
 spec:
-  # type: XXXX
-  # ports: XXXX
-  # selector: XXXX
-  # ...
+  type: ClusterIP
+  ports:
+  - name: mariadb-port
+    port: 3306
+    targetPort: mariadb-port
+  selector:
+    exercise: "02"
+    rol: db-wp
