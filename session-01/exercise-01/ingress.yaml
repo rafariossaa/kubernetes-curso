@@ -1,8 +1,15 @@
 ﻿apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  # name: XXXX
-  # namespace: XXXX
+  name: wp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/affinity: cookie
 spec:
-  # rules: XXXX
-  # ...
+  rules:
+  - host: wp-ex01.bar.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wp
+          servicePort: http
