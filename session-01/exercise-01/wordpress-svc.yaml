@@ -13,4 +13,4 @@ spec:
     port: 443
     targetPort: wp-https
   selector:
-    app: web-wp
+    rol: web-wp
