@@ -1,17 +1,47 @@
 ﻿apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  # name: XXXX
-  # namespace: XXXX
+  name: wordpress-canary
+  namespace: exercise-02
+  labels: 
+    exercise: "02"
+    rol: web-wp
+    track: canary
 spec:
-  # replicas: XXXX
+  replicas: 2
   template:
-    # metadata: XXXX
+    metadata:
+      labels: 
+        exercise: "02"
+        rol: web-wp
+        track: canary
     spec:
       containers:
-      - image: bitnami/wordpress:4.9.5
-        # name: XXXX
-        # env: XXXX
-        # ports: XXXX
-        # XXXX
-        # ...
+      - name: wordpress
+        image: bitnami/wordpress:4.9.5
+        envFrom:
+        - configMapRef:
+            name: wordpress-cm
+        ports:
+        - name: wp-http
+          containerPort: 80
+        - name: wp-https
+          containerPort: 443
+        env:
+        - name: WORDPRESS_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-secrets
+              key: WORDPRESS_DATABASE_PASSWORD
+        livenessProbe:
+          httpGet:
+            path: /
+            port: wp-http
+          initialDelaySeconds: 60
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: wp-http
+          initialDelaySeconds: 60
+          failureThreshold: 3
