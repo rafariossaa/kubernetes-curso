@@ -23,3 +23,7 @@ kubectl create -f wordpress-svc.yaml
 
 # Create ingress
 kubectl create -f wordpress-ingress.yaml
+
+# Deploy canary
+kubectl create -f wordpress-canary-deployment.yaml
+
