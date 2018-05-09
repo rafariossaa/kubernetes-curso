@@ -6,6 +6,7 @@ metadata:
   labels: 
     exercise: "03"
     rol: web-wp
+    track: stable
 spec:
   replicas: 2
   template:
@@ -13,13 +14,14 @@ spec:
       labels: 
         exercise: "03"
         rol: web-wp
+        track: stable
     spec:
       containers:
-      - image: bitnami/wordpress:4.9.4
+      - name: wordpress
+        image: bitnami/wordpress:4.9.4
         envFrom:
         - configMapRef:
             name: wordpress-cm
-        name: wordpress
         ports:
         - name: wp-http
           containerPort: 80
@@ -31,3 +33,15 @@ spec:
             secretKeyRef:
               name: wordpress-secrets
               key: WORDPRESS_DATABASE_PASSWORD
+        livenessProbe:
+          httpGet:
+            path: /
+            port: wp-http
+          initialDelaySeconds: 60
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: wp-http
+          initialDelaySeconds: 60
+          failureThreshold: 3

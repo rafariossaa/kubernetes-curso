@@ -12,5 +12,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: wordpress
+          serviceName: wp-web
           servicePort: wp-http
